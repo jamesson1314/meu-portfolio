@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEMA CRIPTO-7 // ORDO REALITAS // V.3.0</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-color: #d0d0d0;
+            --accent-color: #fff;
+            --highlight: #2bff00; /* Verde Terminal */
+            --highlight-dim: rgba(43, 255, 0, 0.05);
+            --border-color: #333;
+            
+            /* Cores dos Elementos */
+            --blood: #b30000;
+            --energy: #9d00ff;
+            --death: #2a2a2a;
+            --knowledge: #d4af37;
+            --fear: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- BACKGROUND LOGO & AMBIENTAÇÃO --- */
+        .bg-logo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 60vw;
+            max-width: 90vw;
+            opacity: 0.06; /* Bem sutil para não brigar com o texto */
+            z-index: 0;
+            pointer-events: none;
+            filter: grayscale(100%) contrast(1.5);
+        }
+
+        /* Scanlines Estáticas */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+            z-index: 998;
+        }
+
+        /* Linha de Varredura Animada (CRT) */
+        .scan-line {
+            width: 100%;
+            height: 5px;
+            background: rgba(43, 255, 0, 0.1);
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            animation: scanline 6s linear infinite;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        @keyframes scanline {
+            0% { top: -10%; }
+            100% { top: 110%; }
+        }
+
+        /* Vinheta */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle, transparent 55%, #000 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: rgba(12, 12, 12, 0.96);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.95);
+            position: relative;
+            z-index: 2;
+            border-top: 4px solid var(--highlight);
+            backdrop-filter: blur(4px);
+            animation: breatheBorder 4s infinite ease-in-out;
+        }
+
+        @keyframes breatheBorder {
+            0%, 100% { border-color: #333; box-shadow: 0 0 50px rgba(0,0,0,0.95); }
+            50% { border-color: #1a441a; box-shadow: 0 0 60px rgba(43, 255, 0, 0.05); }
+        }
+
+        /* --- FOTO DO AGENTE --- */
+        .agente-foto {
+            display: block;
+            margin: 0 auto 25px auto;
+            max-width: 200px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #444;
+            padding: 4px;
+            background-color: #000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            filter: grayscale(40%) sepia(10%) contrast(1.1);
+            transform: rotate(-1deg);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .agente-foto:hover {
+            transform: rotate(0deg) scale(1.05);
+            filter: grayscale(0%);
+            border-color: var(--highlight);
+        }
+
+        /* --- TIPOGRAFIA --- */
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid var(--highlight);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--highlight);
+            text-shadow: 0 0 10px rgba(43, 255, 0, 0.3);
+            position: relative;
+        }
+
+        /* Glitch no Título ao passar o mouse */
+        h1:hover {
+            animation: glitch-anim 0.3s infinite;
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            font-size: 0.75rem;
+            color: #666;
+            font-family: monospace;
+        }
+
+        /* --- BOTÃO --- */
+        .btn-generate {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(90deg, transparent, rgba(43, 255, 0, 0.08), transparent);
+            color: var(--highlight);
+            border: 1px solid var(--highlight);
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 0 5px var(--highlight);
+        }
+
+        .btn-generate:hover {
+            background-color: var(--highlight);
+            color: #000;
+            box-shadow: 0 0 35px var(--highlight);
+            text-shadow: none;
+        }
+
+        .btn-generate::before {
+            content: "";
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn-generate:hover::before {
+            left: 100%;
+        }
+
+        /* --- RESULTADOS --- */
+        .mission-box {
+            display: none;
+            padding-left: 10px;
+        }
+
+        .section-title {
+            color: #eee;
+            background: linear-gradient(90deg, #151515, transparent);
+            font-weight: bold;
+            margin-top: 35px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            border-left: 3px solid var(--highlight);
+            padding: 5px 15px;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        .result-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 12px;
+            color: #ccc;
+            min-height: 20px;
+        }
+
+        /* Cursor Piscante de Terminal */
+        .cursor-blink::after {
+            content: "_";
+            animation: blink 1s step-end infinite;
+            color: var(--highlight);
+            font-weight: bold;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .narrative-block {
+            background-color: rgba(5, 5, 5, 0.6);
+            border: 1px solid #333;
+            padding: 25px;
+            margin-top: 30px;
+            position: relative;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
+        }
+
+        .narrative-text {
+            font-style: italic;
+            color: #b0b0b0;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .custom-idea {
+            margin-top: 25px;
+            padding: 25px;
+            background: rgba(20, 20, 20, 0.4);
+            border: 1px dashed #444;
+            color: #dcdcdc;
+            line-height: 1.7;
+        }
+
+        /* --- ELEMENTOS PARANORMAIS --- */
+        .element-text {
+            font-weight: 800;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: fluidElement 4s ease infinite;
+            text-transform: uppercase;
+            padding: 0 2px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fluidElement {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .el-sangue { background-image: linear-gradient(90deg, #ff0000, #550000, #ff0000); text-shadow: 0 0 10px rgba(255,0,0,0.3); }
+        .el-energia { background-image: linear-gradient(90deg, #9d00ff, #00eaff, #9d00ff); text-shadow: 0 0 10px rgba(157,0,255,0.3); }
+        .el-morte { background-image: linear-gradient(90deg, #888, #000, #888); text-shadow: 0 0 4px rgba(255,255,255,0.1); -webkit-text-stroke: 0.5px #555; }
+        .el-conhecimento { background-image: linear-gradient(90deg, #ffae00, #b8860b, #ffae00); text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+        .el-medo { background-image: linear-gradient(90deg, #fff, #555, #fff); text-shadow: 0 0 15px rgba(255,255,255,0.6); }
+
+        /* --- GRID --- */
+        .grid-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        /* --- NPCS --- */
+        .npc-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        .npc-card {
+            background: #090909;
+            border: 1px solid #222;
+            padding: 20px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .npc-card:hover {
+            border-color: var(--highlight);
+            background: #0f0f0f;
+            transform: translateY(-2px);
+        }
+
+        .npc-name {
+            font-weight: bold;
+            color: var(--highlight);
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .npc-detail {
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            color: #888;
+        }
+
+        .npc-secret {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(50, 0, 0, 0.2);
+            color: #ff5555;
+            font-size: 0.85rem;
+            border-left: 2px solid #8a0000;
+        }
+
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #444;
+            border-top: 1px solid #222;
+            padding-top: 20px;
+            font-family: monospace;
+        }
+
+        @media (max-width: 768px) {
+            .grid-details { grid-template-columns: 1fr; gap: 20px; }
+            .container { padding: 25px; }
+            h1 { font-size: 1.5rem; }
+            .bg-logo { opacity: 0.04; }
+        }
+    </style>
+</head>
+<body>
+
+    <img src="https://i.imgur.com/yUR31yQ.png" alt="Logo da Ordo Realitas" class="bg-logo">
+
+    <div class="scan-line"></div>
+
+    <div class="container">
+        
+        <div class="header-info">
+            <span>SISTEMA CRIPTO-7 // V.3.1.2</span>
+            <span>ACESSO: NÍVEL SIGMA</span>
+            <span>ID: AGENTE-00</span>
+        </div>
+
+        <img src="https://i.imgur.com/JW7Vomj.png" alt="Arquivo Confidencial" class="agente-foto">
+
+        <h1>Gerador de Missões</h1>
+        
+        <p style="text-align: center; margin-bottom: 40px; color: #666; font-size: 0.85rem;">
+            &gt; Inicializando heurística de caos...<br>
+            &gt; Sincronizando com a Membrana...<br>
+            &gt; <strong>Aviso:</strong> Flutuações de realidade iminentes.
+        </p>
+
+        <button class="btn-generate" onclick="gerarMissao()">
+            <span id="btnText">Descriptografar Arquivo</span>
+        </button>
+
+        <div id="missionOutput" class="mission-box">
+            
+            <div class="narrative-block">
+                <div class="header-info" style="border:none; margin:0; padding:0; color: #444;">RESUMO OPERACIONAL - [CONFIDENCIAL]</div>
+                <p id="narrativeStructure" class="narrative-text cursor-blink">Aguardando dados...</p>
+            </div>
+
+            <div class="grid-details">
+                <div>
+                    <div class="section-title">Ameaça Principal (Sujeito)</div>
+                    <div id="resSubject" class="result-text"></div>
+
+                    <div class="section-title">O Fenômeno (Ação)</div>
+                    <div id="resAction" class="result-text"></div>
+
+                    <div class="section-title">Zona de Operação (Local)</div>
+                    <div id="resLocation" class="result-text"></div>
+                    
+                    <div class="section-title">Complexidade da Missão</div>
+                    <div id="resNex" class="result-text" style="color: var(--highlight);"></div>
+                </div>
+                <div>
+                    <div class="section-title">Ponto de Contato (Aliado)</div>
+                    <div id="resFriend" class="result-text"></div>
+
+                    <div class="section-title">Ativo Chave (Objeto/Recurso)</div>
+                    <div id="resObject" class="result-text"></div>
+
+                    <div class="section-title">Fator de Risco (Evento)</div>
+                    <div id="resEvent" class="result-text"></div>
+                    
+                    <div class="section-title">Atmosfera</div>
+                    <div id="resVibe" class="result-text" style="font-style: italic; font-size: 0.9rem;"></div>
+                </div>
+            </div>
+
+            <div class="custom-idea">
+                <div class="section-title">Diretrizes para o Mestre (Hook & Plot)</div>
+                <p id="customIdea">...</p>
+            </div>
+
+            <div class="section-title" style="margin-top: 50px; border-color: #fff; color: #fff; width: 100%; box-sizing: border-box;">
+                Dossiê de Personagens (NPCs)
+            </div>
+            <div id="npcSection" class="npc-container"></div>
+
+        </div>
+        
+        <footer>
+            PROPRIEDADE DA ORDO REALITAS. USO EXCLUSIVO PARA MESTRES.<br>
+            LEMBRE-SE: O PARANORMAL NÃO VEM PARA A NOSSA REALIDADE DE FORMA FÁCIL.
+        </footer>
+    </div>
+
+    <script>
+        // --- UTILITÁRIOS ---
+        function rolarDado(lados) { return Math.floor(Math.random() * lados) + 1; }
+        function randomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+        // --- SISTEMA DE ANIMAÇÃO DE TEXTO ---
+        function typeWriter(elementId, text, speed = 8) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = "";
+            element.classList.remove("cursor-blink"); // Remove cursor antigo se houver
+            
+            // Tratamento para HTML dentro do texto
+            if (text.includes("<")) {
+                element.innerHTML = text; 
+                return;
+            }
+
+            let i = 0;
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
+            
+            const interval = setInterval(() => {
+                if (i < text.length) {
+                    let randomChar = chars.charAt(Math.floor(Math.random() * chars.length));
+                    element.innerText = text.substring(0, i) + randomChar;
+                    i++;
+                } else {
+                    element.innerHTML = text; // Finaliza
+                    element.classList.remove("decoding");
+                    clearInterval(interval);
+                }
+            }, speed);
+        }
+
+        // Formatação de elementos com cores
+        function formatarElementos(texto) {
+            let t = texto;
+            t = t.replace(/\bSangue\b/g, '<span class="element-text el-sangue">Sangue</span>');
+            t = t.replace(/\bMorte\b/g, '<span class="element-text el-morte">Morte</span>');
+            t = t.replace(/\bEnergia\b/g, '<span class="element-text el-energia">Energia</span>');
+            t = t.replace(/\bConhecimento\b/g, '<span class="element-text el-conhecimento">Conhecimento</span>');
+            t = t.replace(/\bMedo\b/g, '<span class="element-text el-medo">Medo</span>');
+            return t;
+        }
+
+        // --- BANCO DE DADOS EXPANDIDO & COMPLEXO (LORE PROFUNDA) ---
+
+        // Ganchos iniciais para evitar repetição (A SOLUÇÃO PARA O FEEDBACK)
+        const missionHooks = [
+            "Interceptações no rádio da polícia indicam que",
+            "Um arquivo corrompido encontrado no servidor da Ordem revela que",
+            "Relatos de histeria coletiva confirmam que",
+            "A membrana se rompeu violentamente e agora",
+            "Uma equipe anterior desapareceu ao confirmar que",
+            "Um pedido de socorro anônimo, rastreado até um telefone público, avisa que",
+            "Sensores sísmicos detectaram uma anomalia onde",
+            "Não há registros oficiais, mas rumores no submundo dizem que",
+            "Um ritual falho deixou cicatrizes na realidade, resultando em",
+            "Um vídeo viral na Deep Web mostra brevemente",
+            "O relógio do juízo final avançou. A causa é",
+            "Agentes infiltrados na prefeitura relatam que",
+            "Após uma tempestade antinatural,",
+            "Um paciente psiquiátrico desenhou, com perfeição, como",
+            "Códigos antigos da Ordem foram ativados automaticamente quando"
+        ];
+
+        const dbSubjects = [
+            { text: "uma Entidade de Conhecimento que reescreve memórias locais", type: "Entidade" },
+            { text: "um culto corporativo que vende rituais como 'cursos de coaching'", type: "Grupo" },
+            { text: "uma anomalia temporal que faz o dia se repetir eternamente", type: "Fenômeno" },
+            { text: "um assassino em série usando um objeto amaldiçoado senciente", type: "Humano" },
+            { text: "uma colônia de fungos de Sangue controlando corpos mortos", type: "Monstro" },
+            { text: "uma Inteligência Artificial que aprendeu a invocar Energia", type: "Monstro" },
+            { text: "um arquiteto louco que desenhou o prédio como um sigilo gigante", type: "Humano" },
+            { text: "um Eco de Morte de um massacre ocorrido há 100 anos", type: "Fenômeno" },
+            { text: "uma criatura que só existe enquanto alguém tiver medo dela", type: "Monstro" },
+            { text: "um ex-agente da Ordem que sucumbiu e virou um monstro", type: "Monstro" },
+            { text: "uma transmissão de rádio que liquefaz os órgãos de quem ouve", type: "Objeto" },
+            { text: "uma criança 'Tocada' cujos pesadelos se materializam", type: "Humano" }
+        ];
+
+        const dbActions = [
+            { text: "está apagando a existência das vítimas da memória de todos", element: "Conhecimento" },
+            { text: "está substituindo pessoas por cópias feitas de cinzas e lodo", element: "Morte" },
+            { text: "está transformando o ambiente em um labirinto não-euclidiano", element: "Conhecimento" },
+            { text: "está drenando a eletricidade da cidade para alimentar um portal", element: "Energia" },
+            { text: "está fundindo carne humana com máquinas industriais", element: "Sangue" },
+            { text: "está acelerando o envelhecimento de quem entra na zona", element: "Morte" },
+            { text: "está criando uma 'zona de exclusão' onde a dor não existe", element: "Sangue" },
+            { text: "está transmitindo uma frequência que causa violência incontrolável", element: "Energia" },
+            { text: "está materializando os piores arrependimentos dos agentes", element: "Medo" },
+            { text: "está usando a internet para espalhar um Sigilo visual viral", element: "Conhecimento" }
+        ];
+
+        const dbLocations = [
+            { text: "um Shopping Center inaugurado, mas vazio e sem lojistas", vibe: "Liminal/Consumismo" },
+            { text: "uma Plataforma de Petróleo isolada durante um furacão", vibe: "Isolamento/Industrial" },
+            { text: "uma Escola Primária onde as crianças não param de rir", vibe: "Bizarro/Inocência" },
+            { text: "os arquivos subterrâneos de uma Biblioteca Municipal", vibe: "Silêncio/Poeira" },
+            { text: "um condomínio de luxo 'perfeito' onde ninguém sai de casa", vibe: "Paranoia/Stepford" },
+            { text: "um Hospital de Campanha abandonado da época da pandemia", vibe: "Doença/Esterilidade" },
+            { text: "um Parque de Diversões cujos brinquedos funcionam sozinhos", vibe: "Nostalgia/Terror" },
+            { text: "uma Vila de Pescadores coberta por uma névoa amarela", vibe: "Lovecraftiano/Decadência" },
+            { text: "a cobertura de um arranha-céu corporativo (festa de gala)", vibe: "Social/Tensão" },
+            { text: "uma estação de TV local transmitindo estática há 24 horas", vibe: "Tecnologia/Sinais" },
+            { text: "um Bunker da Guerra Fria descoberto recentemente", vibe: "Claustrofobia/Histórico" }
+        ];
+
+        const dbFriends = [
+            "Um detetive particular alcoólatra que viu algo impossível",
+            "Uma historiadora especializada em ocultismo local",
+            "Um hacker 'chapéu branco' que interceptou dados da Ordem",
+            "Um padre excomungado que conhece rituais de banimento",
+            "A única criança sobrevivente do primeiro ataque",
+            "Um agente duplo de um grupo mercenário rival",
+            "Um zelador noturno que possui as chaves de tudo",
+            "Um médico legista perplexo com a autopsia"
+        ];
+
+        const dbObjects = [
+            "Um drive USB contendo as coordenadas do ritual",
+            "Uma máscara cerimonial que revela o invisível",
+            "O diário de um paciente zero escrito em sangue",
+            "Um componente tecnológico infundido com Energia",
+            "Uma relíquia familiar que âncora a entidade",
+            "Uma fita VHS amaldiçoada (assistir causa dano mental)",
+            "Uma amostra biológica que pulsa como um coração",
+            "Um mapa das linhas ley que cruzam a cidade"
+        ];
+
+        const dbEvents = [
+            "A Realidade quebra: A gravidade inverte no local.",
+            "Traição: O aliado está sendo chantageado pelo inimigo.",
+            "Cerco: A polícia local, controlada mentalmente, ataca.",
+            "Contágio: Um dos agentes contrai uma maldição progressiva.",
+            "Loop: A equipe percebe que já viveu esta hora antes.",
+            "Blackout: Todas as luzes e eletrônicos morrem simultaneamente.",
+            "Escalada: A criatura evolui para um NEX superior no meio do combate.",
+            "Dilema: Salvar os civis ou impedir o ritual final?"
+        ];
+
+        // --- LÓGICA DE GERAÇÃO ---
+
+        function gerarMissao() {
+            // Seleção Aleatória
+            const hook = randomItem(missionHooks);
+            const subj = randomItem(dbSubjects);
+            const act = randomItem(dbActions);
+            const loc = randomItem(dbLocations);
+            const friend = randomItem(dbFriends);
+            const obj = randomItem(dbObjects);
+            const evt = randomItem(dbEvents);
+
+            // Cálculos de NEX e Atributos
+            const nexMin = (rolarDado(5) * 5) + 5; 
+            const nexMax = nexMin + (rolarDado(4) * 10);
+            const nexText = `${nexMin}% a ${nexMax}% (Equipe de ${rolarDado(2)+3} Agentes)`;
+
+            // Renderização nos campos técnicos (com efeito de escrita)
+            const fields = [
+                {id: 'resSubject', val: subj.text},
+                {id: 'resAction', val: act.text},
+                {id: 'resLocation', val: loc.text},
+                {id: 'resFriend', val: friend},
+                {id: 'resObject', val: obj},
+                {id: 'resEvent', val: evt},
+                {id: 'resNex', val: nexText},
+                {id: 'resVibe', val: loc.vibe}
+            ];
+
+            fields.forEach(f => {
+                const formatted = formatarElementos(f.val);
+                typeWriter(f.id, formatted, 5);
+            });
+
+            // Construção Narrativa Fluida (A solução do feedback)
+            // Lógica: Hook + Sujeito + Ação + Local + Consequência
+            const narrativaHTML = `
+                <span style="color:#fff">${hook}</span> <strong>${formatarElementos(subj.text)}</strong> 
+                <strong>${formatarElementos(act.text.toLowerCase())}</strong> nas imediações de <strong>${loc.text}</strong>. 
+                <br><br>
+                A inteligência sugere contato imediato com <strong>${friend.toLowerCase()}</strong> para localizar 
+                <strong>${obj.toLowerCase()}</strong> antes que o pior aconteça. Cuidado: a probabilidade é alta de que 
+                <strong>${evt.toLowerCase()}</strong>.
+            `;
+            
+            // Inserir narrativa com classe para cursor piscar
+            const narrativeBox = document.getElementById('narrativeStructure');
+            narrativeBox.innerHTML = narrativaHTML;
+            narrativeBox.classList.add("cursor-blink"); // Reativa cursor
+
+            // Geração de Ideias Customizadas (Complexidade para Mestres)
+            let customIdea = "";
+            let twist = "";
+
+            // Twists baseados no elemento
+            if(act.element === "Conhecimento") twist = "A entidade não quer matar, quer ser esquecida. Quanto mais investigam, mais ela apaga pistas e memórias dos agentes.";
+            else if (act.element === "Sangue") twist = "O inimigo não é um invasor, mas sim o sistema imunológico da realidade tentando expulsar os humanos do local.";
+            else if (act.element === "Energia") twist = "O caos é uma distração. O verdadeiro ritual está acontecendo na internet, usando a live stream de um curioso.";
+            else if (act.element === "Morte") twist = "O local já foi destruído no futuro. Os agentes estão em um eco temporal tentando impedir algo que já aconteceu.";
+            else twist = "O aliado (NPC) é na verdade uma manifestação benigna da entidade tentando se conter.";
+
+            customIdea = `
+                <strong>Dinâmica de Cena:</strong> Aproveite a vibe <em>"${loc.vibe}"</em>. Use sons, descrições de cheiro e variações de temperatura. O terror deve vir da antecipação.<br><br>
+                <strong>Plot Twist Sugerido:</strong> ${twist}<br><br>
+                <strong>Objetivo Secundário:</strong> Além da missão principal, a Ordem exige que a equipe recupere dados ou proteja a reputação da organização a qualquer custo (limpar evidências).
+            `;
+
+            document.getElementById('customIdea').innerHTML = formatarElementos(customIdea);
+
+            // Gerar NPCs Complexos
+            document.getElementById('npcSection').innerHTML = gerarNPCComplexo() + gerarNPCComplexo();
+
+            // Mostrar e Scroll
+            const box = document.getElementById('missionOutput');
+            box.style.display = 'block';
+            
+            setTimeout(() => {
+                box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        function gerarNPCComplexo() {
+            const nomes = ["Arthur", "Dante", "Helena", "Verônica", "Gael", "Lívia", "Cesar", "Rubens", "Agatha", "Tristan", "Sgt. Mendes", "Dr. Fritz"];
+            const sobrenomes = ["Vargas", "Blackwood", "Duarte", "Caldas", "Weiss", "Xavier", "Mancini", "Lopes", "Kovacs"];
+            const arquetipos = [
+                "O Cético Racional (tenta explicar tudo com ciência)",
+                "O Conspiracionista (acerta o motivo pelos meios errados)",
+                "O Sobrevivente Culpado (escapou deixando outros para trás)",
+                "O Oportunista (quer lucrar com a situação)",
+                "O Fanático Religioso (vê o paranormal como divino/demoníaco)"
+            ];
+            
+            const segredos = [
+                "Foi exposto ao paranormal na infância e reprimiu a memória.",
+                "Está secretamente gravando os agentes para vender a fita.",
+                "Possui uma marca de maldição que esconde com roupas longas.",
+                "Reconheceu a criatura como um parente desaparecido.",
+                "Está sob efeito de hipnose ou controle mental leve.",
+                "Roubou um item crucial da cena do crime antes da chegada da equipe."
+            ];
+
+            const nome = randomItem(nomes) + " " + randomItem(sobrenomes);
+            
+            return `
+                <div class="npc-card">
+                    <div class="npc-name">${nome}</div>
+                    <div class="npc-detail"><strong>Personalidade:</strong> ${randomItem(arquetipos)}</div>
+                    <div class="npc-secret">⚠ <strong>Segredo Oculto:</strong> ${formatarElementos(randomItem(segredos))}</div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

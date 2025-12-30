@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio Jamesson - 9º Ano 2026</title>
+    <style>
+        /* Importando fonte moderna */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
+
+        body {
+            background-color: #050505; /* Fundo bem escuro */
+            color: #ffffff;
+            font-family: 'Inter', sans-serif; /* Fonte limpa */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin-top: 60px;
+            margin-bottom: 50px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            /* Efeito gradiente no texto do título */
+            background: linear-gradient(90deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .location {
+            color: #555;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* --- GRID DOS PROJETOS --- */
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Responsivo */
+            gap: 40px;
+            max-width: 1000px;
+            width: 90%;
+            padding-bottom: 50px;
+        }
+
+        .card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 15px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Sobe um pouco ao passar o mouse */
+            border-color: #333;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .tech-tag {
+            font-size: 0.75rem;
+            background: #222;
+            color: #888;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-right: 5px;
+            font-family: monospace;
+            border: 1px solid #333;
+        }
+
+        .description {
+            color: #ccc;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            margin-top: 15px;
+        }
+
+        /* --- O BOTÃO RAINBOW CHROMA ESTILOSO --- */
+        .rainbow-btn {
+            text-decoration: none;
+            position: relative;
+            padding: 15px 30px;
+            color: #fff;
+            background: #000; /* Preto sólido no centro */
+            font-weight: bold;
+            font-family: monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 8px;
+            z-index: 1;
+            display: inline-block;
+            text-align: center;
+            transition: color 0.3s;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* A mágica da borda animada */
+        .rainbow-btn::before {
+            content: "";
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px; /* Tamanho da borda */
+            background: linear-gradient(45deg, 
+                #ff0000, #ff7300, #fffb00, #48ff00, 
+                #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400%;
+            z-index: -1;
+            border-radius: 10px;
+            filter: blur(5px); /* Efeito neon/glow */
+            animation: glowing 20s linear infinite;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        /* Camada preta para cobrir o miolo do botão */
+        .rainbow-btn::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: #050505; 
+            border-radius: 8px;
+            z-index: -1;
+        }
+
+        .rainbow-btn:hover {
+            color: #fff;
+            text-shadow: 0 0 8px rgba(255,255,255,0.8);
+        }
+
+        .rainbow-btn:hover::before {
+            opacity: 1;
+            filter: blur(8px); /* Brilha mais no hover */
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            color: #444;
+            font-size: 0.8rem;
+            border-top: 1px solid #111;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Portfólio Jamesson</h1>
+        <div class="subtitle">Aluno do 9º Ano • 2026</div>
+        <div class="location">Recife, Pernambuco</div>
+    </header>
+
+    <main class="projects-container">
+        
+        <div class="card">
+            <div>
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">JS</span>
+                <h2>Sistema Cripto-7</h2>
+                <p class="description">
+                    Um gerador de missões imersivo inspirado no universo de Ordem Paranormal. 
+                    O projeto simula um terminal de computador antigo (CRT) com efeitos visuais de scanline e glitch.
+                    Ele cria narrativas complexas de investigação sobrenatural, monstros e plot twists automaticamente para Mestres de RPG.
+                </p>
+            </div>
+            <a href="paranormal.html" class="rainbow-btn" target="_blank">
+                Acessar Terminal
+            </a>
+        </div>
+
+        <div class="card">
+            <div>
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">Medieval Style</span>
+                <span class="tech-tag">RNG</span>
+                <h2>Gerador de Aventuras D&D</h2>
+                <p class="description">
+                    Ferramenta desenvolvida para Mestres criarem sessões rápidas de Dungeons & Dragons.
+                    Com uma estética de pergaminho medieval e tipografia gótica, o sistema gera desde ganchos de taverna
+                    até itens mágicos lendários e perigos ambientais complexos com apenas um clique.
+                </p>
+            </div>
+            <a href="dnd.html" class="rainbow-btn" target="_blank">
+                Abrir Pergaminho
+            </a>
+        </div>
+
+    </main>
+
+    <footer>
+        Desenvolvido por Jamesson R. // Todos os direitos reservados 2026.
+    </footer>
+
+</body>
+</html>

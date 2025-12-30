@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GERADOR DE MISSÕES D&D Feito por: Jamesson R. - Versão 1.1 (Stable)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=MedievalSharp&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ESTILOS VISUAIS --- */
+        :root {
+            --wood-primary: #3e2723;
+            --wood-light: #5d4037;
+            --wood-dark: #1b100e;
+            --parchment: #f3e5ab;
+            --ink: #1a100c;
+            --gold: #cca43b;
+            --blood: #8a0303;
+            --magic: #5e35b1;
+            --rare: #00695c;
+            --trap: #e65100;
+        }
+
+        body {
+            font-family: 'MedievalSharp', cursive;
+            background-color: #0f0a08;
+            background-image: repeating-linear-gradient(45deg, #130c08 0, #130c08 10px, #0f0806 10px, #0f0806 20px);
+            color: var(--ink);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 950px;
+            width: 100%;
+            z-index: 1;
+        }
+
+        /* --- UI Components --- */
+        header { text-align: center; margin-bottom: 30px; }
+        
+        .title-card {
+            background: linear-gradient(180deg, var(--wood-primary), var(--wood-dark));
+            border: 2px solid var(--gold);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            display: inline-block;
+            position: relative;
+            min-width: 300px;
+        }
+
+        .title-card::before, .title-card::after {
+            content: "✦"; position: absolute; top: 50%; transform: translateY(-50%); 
+            color: var(--gold); font-size: 2em; text-shadow: 0 0 10px rgba(204, 164, 59, 0.5);
+        }
+        .title-card::before { left: 20px; }
+        .title-card::after { right: 20px; }
+
+        h1 {
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            margin: 0;
+            text-shadow: 2px 2px 0 #000;
+            font-size: 2.5em;
+            letter-spacing: 2px;
+        }
+        .subtitle { color: #ccc; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1em; margin-top: 5px; }
+
+        .controls {
+            background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2H0v-2h20v-2H0V8h20V6H0V4h20V2H0V0h22v20h2V0h2v20h2V0h2v20h2V0h2v20h2V0h2v20h2V0h2v20h2V0h2v20h2v2H22v2h18v2H22v2h18v2H22v2h18v2H22v2h18v2H22v2h18v2H22v2h18v2H22v2h18v2H22v2h18v2H22v2h18v2H20v-2.5zM2 22v16h16V22H2zm14 14H4V24h12v12z' fill='%23281815' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E"), rgba(93, 64, 55, 0.95);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid var(--gold);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        select, button {
+            padding: 14px 25px;
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            border: 2px solid var(--wood-dark);
+            cursor: pointer;
+        }
+
+        select { 
+            background: var(--parchment); 
+            color: var(--wood-dark); 
+            font-weight: bold; 
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            background: linear-gradient(to bottom, var(--gold), #8B6914);
+            color: #2e1d05;
+            font-weight: 800;
+            text-transform: uppercase;
+            box-shadow: 0 4px 0 #3e2723, 0 5px 10px rgba(0,0,0,0.3);
+            transition: all 0.1s;
+            position: relative;
+            overflow: hidden;
+        }
+        button:hover { filter: brightness(1.1); }
+        button:active { transform: translateY(4px); box-shadow: 0 0 0 #3e2723; }
+
+        /* --- O Pergaminho de Quest --- */
+        #questOutput {
+            display: none;
+            background-color: var(--parchment);
+            background-image: linear-gradient(to right, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,0) 90%, rgba(0,0,0,0.05) 100%);
+            padding: 60px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.6);
+            border-top: 25px solid var(--wood-light);
+            border-bottom: 25px solid var(--wood-light);
+            border-radius: 5px;
+            animation: unfold 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        @keyframes unfold { 
+            from { opacity: 0; transform: scaleY(0.01) perspective(500px) rotateX(20deg); } 
+            to { opacity: 1; transform: scaleY(1) perspective(500px) rotateX(0deg); } 
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--blood);
+            text-align: center;
+            font-size: 2.4rem;
+            border-bottom: 3px double var(--ink);
+            padding-bottom: 20px;
+            margin-top: 0;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
+        }
+
+        .meta-tags {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.3);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            color: var(--wood-dark);
+            border: 1px solid rgba(62, 39, 35, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .act-block {
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px dashed rgba(62, 39, 35, 0.3);
+            position: relative;
+        }
+        .act-block:last-child { border-bottom: none; }
+
+        h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--wood-primary);
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        h3::before { content: "❖"; margin-right: 12px; color: var(--gold); font-size: 0.8em; }
+
+        p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4em;
+            line-height: 1.6;
+            margin: 12px 0;
+            text-align: justify;
+            color: #2c1e1a;
+        }
+
+        .highlight { color: var(--blood); font-weight: bold; }
+        .highlight-blue { color: #0d47a1; font-weight: bold; }
+        .highlight-magic { color: var(--magic); font-weight: bold; text-shadow: 0 0 5px rgba(94, 53, 177, 0.2); }
+        .highlight-trap { color: var(--trap); font-weight: bold; }
+
+        .dm-box {
+            background: rgba(255, 255, 255, 0.6);
+            border-left: 5px solid var(--rare);
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-size: 0.95em;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .loot-card {
+            background: #fff;
+            border: 2px solid var(--gold);
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            margin-top: 30px;
+            box-shadow: inset 0 0 30px rgba(204, 164, 59, 0.15);
+        }
+        .loot-card::before {
+            content: "✦ RECOMPENSA✦";
+            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            background: var(--gold); color: #fff; padding: 4px 15px; font-size: 0.85em; font-weight: bold; letter-spacing: 1px;
+            border-radius: 4px;
+        }
+
+        .spotlight-list { list-style: none; padding: 0; margin: 0; }
+        .spotlight-list li { 
+            margin-bottom: 8px; 
+            font-style: italic; 
+            display: flex;
+            align-items: baseline;
+        }
+        .spotlight-list li::before { content: "➤"; color: var(--rare); margin-right: 8px; font-size: 0.8em; }
+        .spotlight-list strong { font-style: normal; color: var(--rare); margin-right: 5px; font-family: 'Cinzel', serif; font-size: 0.9em; }
+
+        .flavor { font-style: italic; color: #555; border-left: 2px solid #ccc; padding-left: 10px; margin: 10px 0; }
+
+        .section-tag { font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; color: var(--wood-light); font-weight: bold; display: block; margin-bottom: 5px;}
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="title-card">
+            <h1>GERADOR DE MISSÕES D&D</h1>
+            <div class="subtitle">Gerador de missões D&D / Feito por: Jamesson R.</div>
+        </div>
+    </header>
+
+    <div class="controls">
+        <select id="partyLevel">
+            <option value="1">Tier 1: Nível 1-4 (Heróis Locais)</option>
+            <option value="2">Tier 2: Nível 5-10 (Heróis do Reino)</option>
+            <option value="3">Tier 3: Nível 11-16 (Mestres do Plano)</option>
+            <option value="4">Tier 4: Nível 17+ (Lendas Vivas)</option>
+        </select>
+        <button onclick="DungeonMasterBrain.generate()">⚔ Criar Nova Aventura</button>
+    </div>
+
+    <div id="questOutput"></div>
+</div>
+
+<script>
+/**
+ * 🧠 DUNGEON MASTER BRAIN v6.1 (Stable)
+ */
+const DungeonMasterBrain = {
+    
+    // --- LORE BANKS ---
+    data: {
+        themes: [
+            { id: "undead_crypt", name: "Cripta Esquecida", sensory: "cheiro de ozônio e pó antigo", hazard_type: "magic", enemies: "Esqueletos Arcanos e Spectros" },
+            { id: "feywild", name: "Floresta Crepuscular", sensory: "pólen brilhante que causa tontura", hazard_type: "charm", enemies: "Pixies Corrompidos e Feras Deslocadoras" },
+            { id: "underdark", name: "Abismo Subterrâneo", sensory: "escuridão que parece ter peso físico", hazard_type: "stealth", enemies: "Drow Exilados e Miconídeos" },
+            { id: "celestial_ruin", name: "Campo de Batalha Celestial", sensory: "luz cegante e cantos angelicais distorcidos", hazard_type: "radiant", enemies: "Anjos Caídos e Constructos de Luz" },
+            { id: "sunken_city", name: "Cidade Submersa (Seca)", sensory: "sal no ar e corais crescendo nas paredes", hazard_type: "physical", enemies: "Kuo-Toa e Elementais de Água" },
+            { id: "clockwork", name: "Fundição Mecânica", sensory: "calor de forja e tique-taque ensurdecedor", hazard_type: "trap", enemies: "Autômatos Defeituosos" },
+            { id: "vampire_ball", name: "Mansão Sanguínea", sensory: "música de cravo e cheiro de ferro", hazard_type: "social", enemies: "Vampiros e Lacaios Hipnotizados" }
+        ],
+
+        quests: [
+            { type: "Invasão e Destruição", verb: "destruir", goal: "um ritual profano em andamento" },
+            { type: "Resgate de Alto Risco", verb: "resgatar", goal: "o último herdeiro de uma linhagem extinta" },
+            { type: "Roubo (Heist)", verb: "roubar", goal: "os planos de invasão do inimigo sem ser notado" },
+            { type: "Escolta de Carga Viva", verb: "escoltar", goal: "uma entidade instável que explode se morrer" },
+            { type: "Investigação Forense", verb: "descobrir", goal: "quem assassinou o anjo guardião da cidade" },
+            { type: "Sobrevivência (Escape)", verb: "escapar", goal: "do domínio antes que os portais se fechem" },
+            { type: "Negociação de Paz", verb: "mediar", goal: "um tratado entre dois senhores da guerra rivais" }
+        ],
+
+        hooks: [
+            "Todos os espelhos da cidade quebraram simultaneamente, revelando esta localização nos estilhaços.",
+            "Vocês acordam com uma marca arcana na pele que queima quando olham para o Norte.",
+            "Um dragão de cobre pousa, morrendo, e entrega um mapa manchado de sangue.",
+            "A comida de todos na taverna se transforma em cinzas, exceto a de vocês.",
+            "Uma criança cega aponta para o grupo e recita os pecados secretos de cada um.",
+            "O cadáver de um antigo aliado é encontrado segurando o item da missão."
+        ],
+
+        npcs: {
+            descriptors: ["um nobre decaído", "um mago com pele de vidro", "um goblin erudito", "um espírito preso em uma armadura", "uma criança com voz de ancião", "um mercador de memórias"],
+            quirks: ["que fala rimando sem querer", "que levita 5cm do chão", "cujas tatuagens mudam de lugar", "que chora sangue mas sorri", "que coleciona dedos de inimigos"],
+            motivations: ["recuperar sua humanidade perdida", "pagar uma aposta feita com um diabo", "impedir que uma profecia se cumpra", "simplesmente ver o mundo queimar", "curar uma maldição de família"],
+            secrets: [
+                "está planejando trair o grupo no momento final.",
+                "não é quem diz ser; é o vilão disfarçado testando seus oponentes.",
+                "está morto há anos e é uma ilusão mantida por pura vontade.",
+                "precisa do item para reviver um tirano, não para destruí-lo.",
+                "não tem o dinheiro prometido, mas oferece sua própria alma."
+            ]
+        }, // <--- CORRIGIDO: Agora usa chaves } para fechar o objeto
+
+        artifacts: {
+            bases: ["Anel", "Espada", "Manto", "Amuleto", "Cálice", "Escudo", "Grimório", "Orbe", "Coroa", "Bota"],
+            materials: ["de Ossos de Gigante", "de Vidro do Vazio", "da Pena de Fênix", "de Sangue Cristalizado", "de Luz Estelar", "de Sombras Sólidas", "de Ferro Infernal"],
+            powers: [
+                "permite reviver um aliado com 1 PV",
+                "concede imunidade a dano elemental",
+                "permite atravessar paredes sólidas",
+                "triplica todo dano causado por 1 minuto",
+                "lê os pensamentos de qualquer criatura",
+                "para o tempo por 6 segundos"
+            ],
+            curses: [
+                "mas atrai predadores espirituais que atacam durante o descanso.",
+                "mas o usuário envelhece 1d10 anos a cada uso.",
+                "mas o usuário perde a capacidade de falar a verdade.",
+                "mas causa terremotos involuntários ao redor do usuário.",
+                "mas drena 50% do ouro que o usuário toca.",
+                "mas sussurra segredos terríveis que impedem o sono."
+            ]
+        },
+
+        hazards: [
+            { name: "Zona de Magia Morta", check: "Arcanismo (Int)", effect: "Magias falham 50% das vezes e itens mágicos se tornam mundanos.", solver: "Mago/Feiticeiro" },
+            { name: "Gravidade Caleidoscópica", check: "Acrobacia (Des)", effect: "O chão muda de direção a cada rodada. Queda causa dano massivo.", solver: "Ladino/Monge" },
+            { name: "Esporos da Loucura", check: "Constituição", effect: "Personagens veem aliados como monstros horríveis.", solver: "Clérigo/Druida" },
+            { name: "Enigmas do Guardião", check: "História/Investigação", effect: "Portas seladas que exigem sacrifício de memórias para abrir.", solver: "Bardo/Mago" },
+            { name: "Corredor de Lâminas Invisíveis", check: "Percepção", effect: "Dano cortante massivo para quem se move rápido demais.", solver: "Ranger/Ladino" }
+        ],
+
+        twists: [
+            "O objetivo da missão, na verdade, é um selo que mantinha um mal maior preso. Ao interagir, o selo quebra.",
+            "O local é o interior de uma criatura titânica que acaba de acordar.",
+            "Uma facção rival chega exatamente ao mesmo tempo, propondo uma aliança temporária contra o Boss.",
+            "O NPC contratante aparece no final, revelando ter usado o grupo para limpar o caminho.",
+            "O tempo no local passa diferente; ao sair, 10 anos se passaram no mundo lá fora."
+        ]
+    },
+
+    // --- HELPER FUNCTIONS ---
+    rand: function(arr) { return arr[Math.floor(Math.random() * arr.length)]; },
+    
+    capitalize: function(str) { return str.charAt(0).toUpperCase() + str.slice(1); },
+
+    generateArtifact: function() {
+        return {
+            name: `${this.rand(this.data.artifacts.bases)} ${this.rand(this.data.artifacts.materials)}`,
+            effect: `Este item lendário <strong>${this.rand(this.data.artifacts.powers)}</strong>, <span style="color:var(--blood)">${this.rand(this.data.artifacts.curses)}</span>`
+        };
+    },
+
+    getSpotlights: function(hazard, theme) {
+        let spots = [];
+        
+        // Baseado na Armadilha
+        if (hazard.solver.includes("Ladino")) spots.push(`<strong>Ladino/Ranger:</strong> Essenciais para superar a ${hazard.name}.`);
+        if (hazard.solver.includes("Mago")) spots.push(`<strong>Conjuradores Arcanos:</strong> Únicos capazes de compreender a lógica mágica aqui.`);
+        if (hazard.solver.includes("Clérigo")) spots.push(`<strong>Clérigo/Paladino:</strong> Necessários para manter o grupo são e salvo.`);
+
+        // Baseado no Tema
+        if (theme.id === 'undead_crypt') spots.push(`<strong>Paladino:</strong> O dano radiante será a chave da vitória.`);
+        if (theme.id === 'feywild' || theme.id === 'underdark') spots.push(`<strong>Druida/Ranger:</strong> Para navegar o terreno sobrenatural.`);
+        if (theme.id === 'vampire_ball') spots.push(`<strong>Bardo/Feiticeiro:</strong> Interações sociais definirão o sucesso antes das armas.`);
+        
+        // Fallback para Guerreiros se a lista for curta
+        if (spots.length < 3) spots.push(`<strong>Guerreiro/Bárbaro:</strong> A linha de frente precisará segurar hordas físicas.`);
+
+        return [...new Set(spots)].slice(0, 3); // Garante 3 únicos
+    },
+
+    // --- MAIN GENERATOR ---
+    generate: function() {
+        // Seleção de Componentes
+        const theme = this.rand(this.data.themes);
+        const quest = this.rand(this.data.quests);
+        const hook = this.rand(this.data.hooks);
+        const npc = {
+            desc: this.rand(this.data.npcs.descriptors),
+            quirk: this.rand(this.data.npcs.quirks),
+            mot: this.rand(this.data.npcs.motivations),
+            secret: this.rand(this.data.npcs.secrets)
+        };
+        const hazard = this.rand(this.data.hazards);
+        const twist = this.rand(this.data.twists);
+        const artifact = this.generateArtifact();
+        const level = document.getElementById('partyLevel').value;
+
+        // Montagem do HTML
+        const html = `
+            <div class="meta-tags">
+                <span class="tag">🌍 Tema: ${theme.name}</span>
+                <span class="tag">⚔️ Tipo: ${quest.type}</span>
+                <span class="tag">💀 Nível: Tier ${level}</span>
+            </div>
+
+            <h2>${this.rand(['A Saga d', 'O Mistério d', 'O Último Suspiro d', 'As Sombras d'])}a ${theme.name}</h2>
+
+            <div class="act-block">
+                <h3> O Inicio </h3>
+                <span class="section-tag">Incidente Inicial</span>
+                <p class="flavor">"${hook}"</p>
+                <p>
+                    O grupo é abordado por <strong>${npc.desc}</strong> ${npc.quirk}. <br>
+                    Sua motivação aparente é <strong>${npc.mot}</strong>. A missão é clara: viajar até o local e <strong>${quest.verb}</strong> ${quest.goal}.
+                </p>
+                <div class="dm-box">
+                    <strong>🤫 O Segredo do NPC:</strong> Ele(a) ${npc.secret}
+                </div>
+            </div>
+
+            <div class="act-block">
+                <h3> A Jornada e os Perigos</h3>
+                <span class="section-tag">Ação Crescente</span>
+                <p>
+                    Ao entrarem n'${theme.name}, os aventureiros notam <em>${theme.sensory}</em>. 
+                    O caminho não é seguro. Além de enfrentarem <strong>${theme.enemies}</strong>, o ambiente luta contra eles.
+                </p>
+                <p>
+                    <span class="highlight-trap">Problema : ${hazard.name}</span><br>
+                    ${hazard.effect} <em>(Teste sugerido: ${hazard.check})</em>
+                </p>
+                <div class="dm-box">
+                    <span class="section-tag" style="color:var(--rare)">Momentos de Brilho (Spotlights)</span>
+                    <ul class="spotlight-list">
+                        ${this.getSpotlights(hazard, theme).map(s => `<li>${s}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="act-block">
+                <h3> Climax e Plot</h3>
+                <span class="section-tag">Ponto de Ruptura</span>
+                <p>
+                    O grupo alcança seu objetivo. O confronto final se inicia. No entanto, quando a vitória parece certa (ou a derrota iminente), a realidade muda.
+                </p>
+                <p class="highlight">
+                    PLOT: ${twist}
+                </p>
+                <p>
+                    Isso força o grupo a tomar uma decisão moral ou tática imediata para sobreviver.
+                </p>
+            </div>
+
+            <div class="act-block">
+                <h3></h3>
+                <span class="section-tag">Resolução</span>
+                <p>
+                    Entre os destroços ou nas mãos do inimigo derrotado, algo pulsa com energia antiga.
+                </p>
+                <div class="loot-card">
+                    <h3 style="margin-top:0; color:var(--wood-primary)">${artifact.name}</h3>
+                    <p>${artifact.effect}</p>
+                </div>
+            </div>
+        `;
+
+        const output = document.getElementById('questOutput');
+        output.innerHTML = html;
+        output.style.display = 'block';
+        
+        // Scroll suave para o resultado
+        output.scrollIntoView({behavior: "smooth", block: "start"});
+    }
+};
+</script>
+
+</body>
+</html>
