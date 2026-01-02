@@ -9,67 +9,58 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
 
-    <title>Portfólio Jamesson | Hub de Projetos 2026</title>
+    <title>Portfólio Jamesson | Hub de Projetos Chrome RGB</title>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>⚡</text></svg>">
-    <meta name="description" content="Portfólio de desenvolvimento Fullstack de Jamesson R. Hub centralizado para ferramentas de RPG e sistemas institucionais.">
 
     <style>
         :root {
-            --bg-dark: #0a0a12;
-            --bg-panel: rgba(15, 15, 25, 0.9);
-            --neon-purple: #bc13fe;
-            --neon-pink: #ff0055;
-            --neon-blue: #00f2ff;
-            --neon-green: #00ff9d;
+            --chrome-black: #050505;
+            --chrome-metal: linear-gradient(145deg, #1a1a1a, #000000);
+            --chrome-border: rgba(255, 255, 255, 0.08);
             --text-main: #ffffff;
-            --text-dim: #f0f0f5; 
-            --text-muted: #bcbcbc;
-            --border: rgba(255, 255, 255, 0.12);
+            --text-dim: #a0a0a0;
+            --rainbow-speed: 6s;
         }
 
+        /* Reset e Base */
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-dark);
+            background-color: var(--chrome-black);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             overflow-x: hidden;
-            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 50% 50%, #111 0%, #050505 100%);
         }
 
-        /* BACKGROUND ANIMADO */
-        .animated-bg {
+        /* Rainbow Background Glow */
+        .rgb-glow {
             position: fixed;
             inset: 0;
-            z-index: -2;
-            background: linear-gradient(-45deg, #0d0616, #1a0119, #050414);
-            background-size: 200% 200%;
-            animation: gradientMove 15s ease infinite;
-        }
-
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.25;
-            pointer-events: none;
             z-index: -1;
+            opacity: 0.15;
+            background: linear-gradient(45deg, #ff0000, #ff00f7, #001aff, #00f7ff, #00ff1a, #ffff00, #ff0000);
+            background-size: 400% 400%;
+            animation: rainbowFlow var(--rainbow-speed) linear infinite;
+            filter: blur(100px);
         }
-        .orb-1 { width: 40vw; height: 40vw; background: var(--neon-purple); top: -10%; left: -10%; animation: float 12s infinite alternate; }
-        .orb-2 { width: 35vw; height: 35vw; background: var(--neon-pink); bottom: -5%; right: -5%; animation: float 18s infinite alternate-reverse; }
 
-        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes float { from { transform: translate(0,0); } to { transform: translate(40px, 40px); } }
+        @keyframes rainbowFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-        /* SIDEBAR */
+        /* SIDEBAR CHROME */
         .sidebar {
             width: 320px;
-            background: var(--bg-panel);
-            backdrop-filter: blur(25px);
-            border-right: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(30px);
+            border-right: 1px solid var(--chrome-border);
             padding: 40px 25px;
             display: flex;
             flex-direction: column;
@@ -77,63 +68,83 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            box-shadow: 20px 0 50px rgba(0,0,0,0.5);
         }
 
         .sidebar h1 {
             font-size: 1.8rem;
-            background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            color: transparent;
+            font-weight: 700;
+            letter-spacing: -1px;
             margin-bottom: 5px;
+            background: linear-gradient(to bottom, #fff 30%, #555 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .sidebar-desc {
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            color: var(--text-dim);
+            font-size: 0.75rem;
             margin-bottom: 40px;
-            letter-spacing: 1px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
         }
 
-        /* LINKS DOS PROJETOS */
+        /* NAV LINKS COM RGB BORDER */
         .nav-link {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
+            position: relative;
+            background: var(--chrome-metal);
+            border: 1px solid var(--chrome-border);
             color: var(--text-dim);
             padding: 18px;
-            border-radius: 14px;
+            border-radius: 12px;
             cursor: pointer;
             margin-bottom: 15px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             align-items: center;
             gap: 15px;
             text-decoration: none;
-            font-size: 1rem;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1px; /* Espessura da borda RGB */
+            border-radius: 12px;
+            background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff, #ff0000);
+            background-size: 400% 400%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+            animation: rainbowFlow 3s linear infinite;
         }
 
         .nav-link:hover {
-            background: rgba(188, 19, 254, 0.1);
-            border-color: var(--neon-purple);
-            transform: translateX(8px);
-            color: white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px) scale(1.02);
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border-color: transparent;
+        }
+
+        .nav-link:hover::before {
+            opacity: 1;
         }
 
         .nav-link.active {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: white;
-            color: white;
+            background: #fff;
+            color: #000;
+            font-weight: 700;
         }
 
-        /* Cores Específicas por Projeto ao Hover */
-        .link-ordo:hover { border-color: var(--neon-green); background: rgba(0, 255, 157, 0.05); }
-        .link-dnd:hover { border-color: var(--neon-pink); background: rgba(255, 0, 85, 0.05); }
-        .link-psi:hover { border-color: var(--neon-blue); background: rgba(0, 242, 255, 0.05); }
+        .icon { width: 22px; height: 22px; fill: currentColor; }
+        .icon-external { width: 12px; height: 12px; margin-left: auto; opacity: 0.5; }
 
-        .icon { width: 24px; height: 24px; fill: currentColor; }
-        .icon-external { width: 14px; height: 14px; margin-left: auto; opacity: 0.5; }
-
-        /* ÁREA DE CONTEÚDO */
+        /* HERO CARD CHROME BRIGHT */
         .main-content {
             flex: 1;
             padding: 40px;
@@ -143,69 +154,93 @@
         }
 
         .hero-card {
-            background: var(--bg-panel);
-            padding: 80px 60px;
-            border-radius: 30px;
+            background: linear-gradient(135deg, rgba(20,20,20,0.9) 0%, rgba(0,0,0,0.95) 100%);
+            padding: 100px 60px;
+            border-radius: 40px;
             text-align: center;
-            max-width: 900px;
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            max-width: 850px;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        }
+
+        /* Efeito de Reflexo no Card */
+        .hero-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 50%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, transparent 100%);
+            pointer-events: none;
+            border-radius: 40px 40px 0 0;
         }
 
         .hero-card h2 {
-            font-size: 4rem;
-            margin-bottom: 25px;
+            font-size: 4.5rem;
+            margin-bottom: 20px;
             font-weight: 700;
+            background: linear-gradient(45deg, #fff, #ff00f7, #00f7ff, #fff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbowFlow 8s ease infinite;
         }
 
         .hero-card p {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             color: var(--text-dim);
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        /* Custom Cursor Style para o Rainbow */
+        .hero-card b {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255,255,255,0.5);
         }
 
         /* RESPONSIVIDADE */
         @media (max-width: 900px) {
             body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; padding: 30px 20px; border-right: none; border-bottom: 1px solid var(--border); }
-            .hero-card { padding: 40px 20px; margin: 20px; }
-            .hero-card h2 { font-size: 2.5rem; }
+            .sidebar { 
+                width: 100%; height: auto; padding: 25px; 
+                border-right: none; border-bottom: 1px solid var(--chrome-border);
+            }
+            .hero-card { padding: 60px 30px; margin: 20px; }
+            .hero-card h2 { font-size: 2.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="animated-bg" aria-hidden="true"></div>
-    <div class="orb orb-1" aria-hidden="true"></div>
-    <div class="orb orb-2" aria-hidden="true"></div>
+    <div class="rgb-glow"></div>
 
     <aside class="sidebar">
         <header>
             <h1>Jamesson R.</h1>
-            <p class="sidebar-desc">HUB DE PROJETOS // 2026</p>
+            <p class="sidebar-desc">Chrome Hub // 2026</p>
         </header>
 
         <nav aria-label="Menu de Projetos">
             <a href="#" class="nav-link active">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                Início
+                Core
             </a>
 
-            <a href="https://jamesson1314.github.io/Ordo-Realitas/" target="_blank" class="nav-link link-ordo">
+            <a href="https://jamesson1314.github.io/Ordo-Realitas/" target="_blank" class="nav-link">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                 Ordo Realitas
                 <svg class="icon-external" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
             </a>
 
-            <a href="https://jamesson1314.github.io/Gerador-D-D/" target="_blank" class="nav-link link-dnd">
+            <a href="https://jamesson1314.github.io/Gerador-D-D/" target="_blank" class="nav-link">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 Gerador D&D
                 <svg class="icon-external" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
             </a>
 
-            <a href="https://jamesson1314.github.io/psi-rosangela/index.html" target="_blank" class="nav-link link-psi">
+            <a href="https://jamesson1314.github.io/psi-rosangela/index.html" target="_blank" class="nav-link">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M16.32 14.86c-1.39-1.28-1.57-2.67-1.57-3.23 0-2.32 1.93-3.63 2.5-3.63.79 0 1.25.59 1.25.59L20 7.11s-.94-1.61-2.75-1.61c-1.64 0-3.32 1.3-3.79 3.23-.33-.07-.67-.13-1.02-.13h-.88c-.35 0-.69.06-1.02.13-.47-1.93-2.15-3.23-3.79-3.23-1.81 0-2.75 1.61-2.75 1.61L5.5 8.59s.46-.59 1.25-.59c.57 0 2.5 1.31 2.5 3.63 0 .56-.18 1.95-1.57 3.23l-1.06 1.06c-1.22 1.22-1.62 3.12-.96 4.77l.22.61h12.24l.22-.61c.66-1.65.26-3.55-.96-4.77l-1.06-1.06z"/></svg>
                 Psi Rosângela
                 <svg class="icon-external" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
@@ -215,24 +250,28 @@
 
     <main class="main-content">
         <section class="hero-card">
-            <h2 id="typing-text">Fullstack Dev.</h2>
-            <p>Seja bem-vindo ao meu ecossistema de projetos. De ferramentas para RPG a soluções institucionais, explore meu trabalho clicando nos links ao lado.</p>
+            <h2 id="typing-text">System Online.</h2>
+            <p>Arquitetando o futuro através de interfaces metálicas e código de alta performance. Explore os módulos ativos através do menu lateral.</p>
         </section>
     </main>
 
     <script>
-        // Efeito de digitação simples para o título
+        // Efeito de digitação aprimorado
         const text = "Fullstack Dev.";
         const h2 = document.getElementById('typing-text');
         let i = 0;
 
         function type() {
             if (i < text.length) {
-                h2.innerHTML = text.slice(0, i + 1) + '<span style="color:var(--neon-purple)">_</span>';
+                h2.innerHTML = text.slice(0, i + 1) + '<b>|</b>';
                 i++;
-                setTimeout(type, 150);
+                setTimeout(type, 120);
             } else {
                 h2.innerHTML = text;
+                // Faz o cursor piscar no final
+                setInterval(() => {
+                    h2.innerHTML = h2.innerHTML.endsWith('<b>|</b>') ? text : text + '<b>|</b>';
+                }, 500);
             }
         }
         
