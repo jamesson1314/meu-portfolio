@@ -9,10 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
 
-    <title>Portfólio Jamesson | Desenvolvedor Fullstack 2026</title>
-    <meta name="description" content="Hub interativo de Jamesson R. com ferramentas de RPG, sistemas e sites institucionais.">
+    <title>Portfólio Jamesson | Hub de Projetos 2026</title>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>⚡</text></svg>">
+    <meta name="description" content="Portfólio de desenvolvimento Fullstack de Jamesson R. Hub centralizado para ferramentas de RPG e sistemas institucionais.">
 
     <style>
         :root {
@@ -21,7 +21,7 @@
             --neon-purple: #bc13fe;
             --neon-pink: #ff0055;
             --neon-blue: #00f2ff;
-            --neon-green: #00ff9d; /* Nova cor para destaque */
+            --neon-green: #00ff9d;
             --text-main: #ffffff;
             --text-dim: #f0f0f5; 
             --text-muted: #bcbcbc;
@@ -48,7 +48,6 @@
             background: linear-gradient(-45deg, #0d0616, #1a0119, #050414);
             background-size: 200% 200%;
             animation: gradientMove 15s ease infinite;
-            will-change: background-position;
         }
 
         .orb {
@@ -67,11 +66,11 @@
 
         /* SIDEBAR */
         .sidebar {
-            width: 300px;
+            width: 320px;
             background: var(--bg-panel);
             backdrop-filter: blur(25px);
             border-right: 1px solid var(--border);
-            padding: 40px 20px;
+            padding: 40px 25px;
             display: flex;
             flex-direction: column;
             height: 100vh;
@@ -80,113 +79,99 @@
             z-index: 10;
         }
 
-        /* BOTÕES DE NAVEGAÇÃO (E LINKS) */
-        .nav-btn {
-            background: transparent;
+        .sidebar h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-desc {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        /* LINKS DOS PROJETOS */
+        .nav-link {
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
             color: var(--text-dim);
-            padding: 16px;
-            border-radius: 12px;
+            padding: 18px;
+            border-radius: 14px;
             cursor: pointer;
-            margin-bottom: 12px;
-            transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
+            text-decoration: none;
             font-size: 1rem;
-            width: 100%;
-            text-decoration: none; /* Importante para o link do Psi Rosângela */
-            font-family: inherit;
         }
 
-        .nav-btn:hover, .nav-btn:focus {
-            background: rgba(188, 19, 254, 0.15);
+        .nav-link:hover {
+            background: rgba(188, 19, 254, 0.1);
             border-color: var(--neon-purple);
-            outline: 2px solid transparent;
-        }
-
-        .nav-btn.active {
-            background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
-            border: none;
+            transform: translateX(8px);
             color: white;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(188, 19, 254, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
-        /* Estilo específico para link externo */
-        .nav-btn.external {
-            border-color: rgba(0, 255, 157, 0.3);
-        }
-        .nav-btn.external:hover {
-            border-color: var(--neon-green);
-            background: rgba(0, 255, 157, 0.1);
-            color: #fff;
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: white;
+            color: white;
         }
 
-        /* Botão de Download */
-        .download-btn {
-            border-color: var(--neon-blue);
-            color: var(--neon-blue);
-            margin-top: 5px;
-            font-size: 0.9rem;
-            padding: 12px;
-        }
-        .download-btn:hover {
-             background: rgba(0, 242, 255, 0.15);
-             border-color: var(--neon-blue);
-             color: white;
-        }
+        /* Cores Específicas por Projeto ao Hover */
+        .link-ordo:hover { border-color: var(--neon-green); background: rgba(0, 255, 157, 0.05); }
+        .link-dnd:hover { border-color: var(--neon-pink); background: rgba(255, 0, 85, 0.05); }
+        .link-psi:hover { border-color: var(--neon-blue); background: rgba(0, 242, 255, 0.05); }
 
-        .icon { width: 22px; height: 22px; fill: currentColor; }
-        .icon-sm { width: 14px; height: 14px; margin-left: auto; opacity: 0.6; }
+        .icon { width: 24px; height: 24px; fill: currentColor; }
+        .icon-external { width: 14px; height: 14px; margin-left: auto; opacity: 0.5; }
 
-        /* AREA PRINCIPAL */
+        /* ÁREA DE CONTEÚDO */
         .main-content {
             flex: 1;
             padding: 40px;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
         }
 
-        .viewport {
-            width: 100%;
-            max-width: 1200px;
-            height: 85vh;
-            background: #000;
-            border-radius: 24px;
+        .hero-card {
+            background: var(--bg-panel);
+            padding: 80px 60px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 900px;
             border: 1px solid var(--border);
-            overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            display: none;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        iframe { width: 100%; height: 100%; border: none; }
+        .hero-card h2 {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
 
+        .hero-card p {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* RESPONSIVIDADE */
         @media (max-width: 900px) {
             body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; position: relative; padding: 20px; }
-            .viewport { height: 70vh; }
-        }
-
-        .home-card {
-            background: var(--bg-panel);
-            padding: 60px 40px;
-            border-radius: 24px;
-            text-align: center;
-            max-width: 800px;
-            border: 1px solid var(--border);
-        }
-
-        .status-alert {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            background: #ff0055;
-            border-radius: 8px;
-            display: none;
-            z-index: 100;
+            .sidebar { width: 100%; height: auto; padding: 30px 20px; border-right: none; border-bottom: 1px solid var(--border); }
+            .hero-card { padding: 40px 20px; margin: 20px; }
+            .hero-card h2 { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -197,143 +182,61 @@
     <div class="orb orb-2" aria-hidden="true"></div>
 
     <aside class="sidebar">
-        <header style="margin-bottom: 40px;">
-            <h1 style="font-size: 1.8rem; background: linear-gradient(to right, #00f2ff, #bc13fe); -webkit-background-clip: text; color: transparent;">Jamesson R.</h1>
-            <p style="color: var(--text-muted); font-size: 0.9rem;">Fullstack Student 2026</p>
+        <header>
+            <h1>Jamesson R.</h1>
+            <p class="sidebar-desc">HUB DE PROJETOS // 2026</p>
         </header>
 
-        <nav class="nav-menu">
-            <button class="nav-btn active" onclick="app.showHome()" id="btn-home">
+        <nav aria-label="Menu de Projetos">
+            <a href="#" class="nav-link active">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 Início
-            </button>
-            <button class="nav-btn" onclick="app.loadProject('cripto')" id="btn-cripto">
+            </a>
+
+            <a href="https://jamesson1314.github.io/Ordo-Realitas/" target="_blank" class="nav-link link-ordo">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                 Ordo Realitas
-            </button>
-            <button class="nav-btn" onclick="app.loadProject('dnd')" id="btn-dnd">
+                <svg class="icon-external" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+            </a>
+
+            <a href="https://jamesson1314.github.io/Gerador-D-D/" target="_blank" class="nav-link link-dnd">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 Gerador D&D
-            </button>
+                <svg class="icon-external" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+            </a>
 
-            <a href="https://jamesson1314.github.io/psi-rosangela/index.html" target="_blank" class="nav-btn external">
+            <a href="https://jamesson1314.github.io/psi-rosangela/index.html" target="_blank" class="nav-link link-psi">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M16.32 14.86c-1.39-1.28-1.57-2.67-1.57-3.23 0-2.32 1.93-3.63 2.5-3.63.79 0 1.25.59 1.25.59L20 7.11s-.94-1.61-2.75-1.61c-1.64 0-3.32 1.3-3.79 3.23-.33-.07-.67-.13-1.02-.13h-.88c-.35 0-.69.06-1.02.13-.47-1.93-2.15-3.23-3.79-3.23-1.81 0-2.75 1.61-2.75 1.61L5.5 8.59s.46-.59 1.25-.59c.57 0 2.5 1.31 2.5 3.63 0 .56-.18 1.95-1.57 3.23l-1.06 1.06c-1.22 1.22-1.62 3.12-.96 4.77l.22.61h12.24l.22-.61c.66-1.65.26-3.55-.96-4.77l-1.06-1.06z"/></svg>
                 Psi Rosângela
-                <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                <svg class="icon-external" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
             </a>
-            
-            <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
-            
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Downloads (Source):</p>
-            
-            <button class="nav-btn download-btn" onclick="app.downloadFile('cripto')">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                Code: Ordo Realitas
-            </button>
-             <button class="nav-btn download-btn" onclick="app.downloadFile('dnd')">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                Code: Gerador D&D
-            </button>
         </nav>
     </aside>
 
     <main class="main-content">
-        <div id="home-screen" class="home-card">
-            <h2 style="font-size: 3.5rem; margin-bottom: 20px;">Bem-vindo.</h2>
-            <p style="font-size: 1.2rem; color: var(--text-dim);">Hub de desenvolvimento otimizado para RPG, narrativa e soluções institucionais.</p>
-            <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">
-                Selecione um projeto no menu para visualizar.
-            </p>
-        </div>
-
-        <div id="project-container" class="viewport">
-            <iframe id="app-frame" title="Área de Trabalho do Projeto" sandbox="allow-scripts allow-same-origin"></iframe>
-        </div>
+        <section class="hero-card">
+            <h2 id="typing-text">Fullstack Dev.</h2>
+            <p>Seja bem-vindo ao meu ecossistema de projetos. De ferramentas para RPG a soluções institucionais, explore meu trabalho clicando nos links ao lado.</p>
+        </section>
     </main>
 
-    <div id="error-toast" class="status-alert">Erro ao processar solicitação.</div>
-
-    <script type="text/template" id="tpl-cripto-full">
-        <!DOCTYPE html>
-        <html><body><h1>Erro: Cole o código original aqui</h1></body></html>
-    </script>
-    
-    <script type="text/template" id="tpl-dnd-full">
-        <!DOCTYPE html>
-        <html><body><h1>Erro: Cole o código original aqui</h1></body></html>
-    </script>
-
     <script>
-        const app = {
-            currentBlob: null,
+        // Efeito de digitação simples para o título
+        const text = "Fullstack Dev.";
+        const h2 = document.getElementById('typing-text');
+        let i = 0;
 
-            showHome() {
-                this.updateUI('home');
-                document.getElementById('home-screen').style.display = 'block';
-                document.getElementById('project-container').style.display = 'none';
-            },
-
-            // Carrega projetos internos no Iframe
-            async loadProject(id) {
-                try {
-                    const template = document.getElementById(`tpl-${id}-full`);
-                    if (!template) throw new Error("Template vazio.");
-
-                    this.updateUI(id);
-                    const frame = document.getElementById('app-frame');
-                    const container = document.getElementById('project-container');
-                    const home = document.getElementById('home-screen');
-
-                    home.style.display = 'none';
-                    container.style.display = 'block';
-
-                    const blob = new Blob([template.innerHTML], { type: 'text/html' });
-                    if (this.currentBlob) URL.revokeObjectURL(this.currentBlob);
-                    this.currentBlob = URL.createObjectURL(blob);
-                    
-                    frame.src = this.currentBlob;
-
-                } catch (err) {
-                    console.error(err);
-                    this.showError();
-                }
-            },
-            
-            // Função de Download
-            downloadFile(id) {
-                 try {
-                    const template = document.getElementById(`tpl-${id}-full`);
-                    if (!template) throw new Error("Template não encontrado.");
-                    
-                    const blob = new Blob([template.innerHTML], { type: 'text/html' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = id === 'cripto' ? 'Ordo_Realitas_Missao.html' : 'Gerador_DnD.html';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                    
-                 } catch (err) {
-                     this.showError();
-                 }
-            },
-
-            updateUI(id) {
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                const active = document.getElementById(`btn-${id}`);
-                if (active) active.classList.add('active');
-            },
-            
-            showError() {
-                const toast = document.getElementById('error-toast');
-                toast.style.display = 'block';
-                setTimeout(() => toast.style.display = 'none', 3000);
+        function type() {
+            if (i < text.length) {
+                h2.innerHTML = text.slice(0, i + 1) + '<span style="color:var(--neon-purple)">_</span>';
+                i++;
+                setTimeout(type, 150);
+            } else {
+                h2.innerHTML = text;
             }
-        };
-
-        window.onload = () => app.showHome();
+        }
+        
+        window.onload = type;
     </script>
 </body>
 </html>
