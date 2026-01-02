@@ -3,231 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfólio Jamesson - 9º Ano 2026</title>
+    
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" as="style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <title>Portfólio Jamesson | Desenvolvedor Fullstack 2026</title>
+    <meta name="description" content="Hub interativo de Jamesson R. com ferramentas de RPG, sistemas e sites institucionais.">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>⚡</text></svg>">
+
     <style>
-        /* Importando fonte moderna */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: rgba(15, 15, 25, 0.9);
+            --neon-purple: #bc13fe;
+            --neon-pink: #ff0055;
+            --neon-blue: #00f2ff;
+            --neon-green: #00ff9d; /* Nova cor para destaque */
+            --text-main: #ffffff;
+            --text-dim: #f0f0f5; 
+            --text-muted: #bcbcbc;
+            --border: rgba(255, 255, 255, 0.12);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: #050505; /* Fundo bem escuro */
-            color: #ffffff;
-            font-family: 'Inter', sans-serif; /* Fonte limpa */
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* --- CABEÇALHO --- */
-        header {
-            text-align: center;
-            margin-top: 60px;
-            margin-bottom: 50px;
-            padding: 20px;
+        /* BACKGROUND ANIMADO */
+        .animated-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: linear-gradient(-45deg, #0d0616, #1a0119, #050414);
+            background-size: 200% 200%;
+            animation: gradientMove 15s ease infinite;
+            will-change: background-position;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            /* Efeito gradiente no texto do título */
-            background: linear-gradient(90deg, #fff, #aaa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+            pointer-events: none;
+            z-index: -1;
         }
+        .orb-1 { width: 40vw; height: 40vw; background: var(--neon-purple); top: -10%; left: -10%; animation: float 12s infinite alternate; }
+        .orb-2 { width: 35vw; height: 35vw; background: var(--neon-pink); bottom: -5%; right: -5%; animation: float 18s infinite alternate-reverse; }
 
-        .subtitle {
-            color: #888;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-        }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes float { from { transform: translate(0,0); } to { transform: translate(40px, 40px); } }
 
-        .location {
-            color: #555;
-            font-size: 0.9rem;
-            margin-top: 5px;
-            font-style: italic;
-        }
-
-        /* --- GRID DOS PROJETOS --- */
-        .projects-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Responsivo */
-            gap: 40px;
-            max-width: 1000px;
-            width: 90%;
-            padding-bottom: 50px;
-        }
-
-        .card {
-            background: #111;
-            border: 1px solid #222;
-            border-radius: 15px;
-            padding: 30px;
+        /* SIDEBAR */
+        .sidebar {
+            width: 300px;
+            background: var(--bg-panel);
+            backdrop-filter: blur(25px);
+            border-right: 1px solid var(--border);
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.3s ease;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        .card:hover {
-            transform: translateY(-5px); /* Sobe um pouco ao passar o mouse */
-            border-color: #333;
-        }
-
-        .card h2 {
-            margin-top: 0;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-
-        .tech-tag {
-            font-size: 0.75rem;
-            background: #222;
-            color: #888;
-            padding: 4px 10px;
-            border-radius: 20px;
-            margin-right: 5px;
-            font-family: monospace;
-            border: 1px solid #333;
-        }
-
-        .description {
-            color: #ccc;
-            line-height: 1.6;
-            font-size: 0.95rem;
-            margin-bottom: 30px;
-            margin-top: 15px;
-        }
-
-        /* --- O BOTÃO RAINBOW CHROMA ESTILOSO --- */
-        .rainbow-btn {
-            text-decoration: none;
-            position: relative;
-            padding: 15px 30px;
-            color: #fff;
-            background: #000; /* Preto sólido no centro */
-            font-weight: bold;
-            font-family: monospace;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-radius: 8px;
-            z-index: 1;
-            display: inline-block;
-            text-align: center;
-            transition: color 0.3s;
-            border: none;
+        /* BOTÕES DE NAVEGAÇÃO (E LINKS) */
+        .nav-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 16px;
+            border-radius: 12px;
             cursor: pointer;
+            margin-bottom: 12px;
+            transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1rem;
             width: 100%;
-            box-sizing: border-box;
+            text-decoration: none; /* Importante para o link do Psi Rosângela */
+            font-family: inherit;
         }
 
-        /* A mágica da borda animada */
-        .rainbow-btn::before {
-            content: "";
-            position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px; /* Tamanho da borda */
-            background: linear-gradient(45deg, 
-                #ff0000, #ff7300, #fffb00, #48ff00, 
-                #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-            background-size: 400%;
-            z-index: -1;
-            border-radius: 10px;
-            filter: blur(5px); /* Efeito neon/glow */
-            animation: glowing 20s linear infinite;
-            opacity: 0.8;
-            transition: opacity 0.3s;
+        .nav-btn:hover, .nav-btn:focus {
+            background: rgba(188, 19, 254, 0.15);
+            border-color: var(--neon-purple);
+            outline: 2px solid transparent;
         }
 
-        /* Camada preta para cobrir o miolo do botão */
-        .rainbow-btn::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: #050505; 
-            border-radius: 8px;
-            z-index: -1;
+        .nav-btn.active {
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+            border: none;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(188, 19, 254, 0.3);
         }
 
-        .rainbow-btn:hover {
+        /* Estilo específico para link externo */
+        .nav-btn.external {
+            border-color: rgba(0, 255, 157, 0.3);
+        }
+        .nav-btn.external:hover {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 157, 0.1);
             color: #fff;
-            text-shadow: 0 0 8px rgba(255,255,255,0.8);
         }
 
-        .rainbow-btn:hover::before {
-            opacity: 1;
-            filter: blur(8px); /* Brilha mais no hover */
+        /* Botão de Download */
+        .download-btn {
+            border-color: var(--neon-blue);
+            color: var(--neon-blue);
+            margin-top: 5px;
+            font-size: 0.9rem;
+            padding: 12px;
+        }
+        .download-btn:hover {
+             background: rgba(0, 242, 255, 0.15);
+             border-color: var(--neon-blue);
+             color: white;
         }
 
-        @keyframes glowing {
-            0% { background-position: 0 0; }
-            50% { background-position: 400% 0; }
-            100% { background-position: 0 0; }
+        .icon { width: 22px; height: 22px; fill: currentColor; }
+        .icon-sm { width: 14px; height: 14px; margin-left: auto; opacity: 0.6; }
+
+        /* AREA PRINCIPAL */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
         }
 
-        footer {
-            margin-top: auto;
-            padding: 20px;
-            color: #444;
-            font-size: 0.8rem;
-            border-top: 1px solid #111;
+        .viewport {
             width: 100%;
+            max-width: 1200px;
+            height: 85vh;
+            background: #000;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            display: none;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: relative; padding: 20px; }
+            .viewport { height: 70vh; }
+        }
+
+        .home-card {
+            background: var(--bg-panel);
+            padding: 60px 40px;
+            border-radius: 24px;
             text-align: center;
+            max-width: 800px;
+            border: 1px solid var(--border);
+        }
+
+        .status-alert {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: #ff0055;
+            border-radius: 8px;
+            display: none;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Portfólio Jamesson</h1>
-        <div class="subtitle">Aluno do 9º Ano • 2026</div>
-        <div class="location">Recife, Pernambuco</div>
-    </header>
+    <div class="animated-bg" aria-hidden="true"></div>
+    <div class="orb orb-1" aria-hidden="true"></div>
+    <div class="orb orb-2" aria-hidden="true"></div>
 
-    <main class="projects-container">
-        
-        <div class="card">
-            <div>
-                <span class="tech-tag">HTML5</span>
-                <span class="tech-tag">CSS3</span>
-                <span class="tech-tag">JS</span>
-                <h2>Sistema Cripto-7</h2>
-                <p class="description">
-                    Um gerador de missões imersivo inspirado no universo de Ordem Paranormal. 
-                    O projeto simula um terminal de computador antigo (CRT) com efeitos visuais de scanline e glitch.
-                    Ele cria narrativas complexas de investigação sobrenatural, monstros e plot twists automaticamente para Mestres de RPG.
-                </p>
-            </div>
-            <a href="paranormal.html" class="rainbow-btn" target="_blank">
-                Acessar Terminal
+    <aside class="sidebar">
+        <header style="margin-bottom: 40px;">
+            <h1 style="font-size: 1.8rem; background: linear-gradient(to right, #00f2ff, #bc13fe); -webkit-background-clip: text; color: transparent;">Jamesson R.</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Fullstack Student 2026</p>
+        </header>
+
+        <nav class="nav-menu">
+            <button class="nav-btn active" onclick="app.showHome()" id="btn-home">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                Início
+            </button>
+            <button class="nav-btn" onclick="app.loadProject('cripto')" id="btn-cripto">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                Ordo Realitas
+            </button>
+            <button class="nav-btn" onclick="app.loadProject('dnd')" id="btn-dnd">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                Gerador D&D
+            </button>
+
+            <a href="https://jamesson1314.github.io/psi-rosangela/index.html" target="_blank" class="nav-btn external">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M16.32 14.86c-1.39-1.28-1.57-2.67-1.57-3.23 0-2.32 1.93-3.63 2.5-3.63.79 0 1.25.59 1.25.59L20 7.11s-.94-1.61-2.75-1.61c-1.64 0-3.32 1.3-3.79 3.23-.33-.07-.67-.13-1.02-.13h-.88c-.35 0-.69.06-1.02.13-.47-1.93-2.15-3.23-3.79-3.23-1.81 0-2.75 1.61-2.75 1.61L5.5 8.59s.46-.59 1.25-.59c.57 0 2.5 1.31 2.5 3.63 0 .56-.18 1.95-1.57 3.23l-1.06 1.06c-1.22 1.22-1.62 3.12-.96 4.77l.22.61h12.24l.22-.61c.66-1.65.26-3.55-.96-4.77l-1.06-1.06z"/></svg>
+                Psi Rosângela
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
             </a>
+            
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
+            
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Downloads (Source):</p>
+            
+            <button class="nav-btn download-btn" onclick="app.downloadFile('cripto')">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                Code: Ordo Realitas
+            </button>
+             <button class="nav-btn download-btn" onclick="app.downloadFile('dnd')">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                Code: Gerador D&D
+            </button>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div id="home-screen" class="home-card">
+            <h2 style="font-size: 3.5rem; margin-bottom: 20px;">Bem-vindo.</h2>
+            <p style="font-size: 1.2rem; color: var(--text-dim);">Hub de desenvolvimento otimizado para RPG, narrativa e soluções institucionais.</p>
+            <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">
+                Selecione um projeto no menu para visualizar.
+            </p>
         </div>
 
-        <div class="card">
-            <div>
-                <span class="tech-tag">HTML5</span>
-                <span class="tech-tag">Medieval Style</span>
-                <span class="tech-tag">RNG</span>
-                <h2>Gerador de Aventuras D&D</h2>
-                <p class="description">
-                    Ferramenta desenvolvida para Mestres criarem sessões rápidas de Dungeons & Dragons.
-                    Com uma estética de pergaminho medieval e tipografia gótica, o sistema gera desde ganchos de taverna
-                    até itens mágicos lendários e perigos ambientais complexos com apenas um clique.
-                </p>
-            </div>
-            <a href="dnd.html" class="rainbow-btn" target="_blank">
-                Abrir Pergaminho
-            </a>
+        <div id="project-container" class="viewport">
+            <iframe id="app-frame" title="Área de Trabalho do Projeto" sandbox="allow-scripts allow-same-origin"></iframe>
         </div>
-
     </main>
 
-    <footer>
-        Desenvolvido por Jamesson R. // Todos os direitos reservados 2026.
-    </footer>
+    <div id="error-toast" class="status-alert">Erro ao processar solicitação.</div>
 
+    <script type="text/template" id="tpl-cripto-full">
+        <!DOCTYPE html>
+        <html><body><h1>Erro: Cole o código original aqui</h1></body></html>
+    </script>
+    
+    <script type="text/template" id="tpl-dnd-full">
+        <!DOCTYPE html>
+        <html><body><h1>Erro: Cole o código original aqui</h1></body></html>
+    </script>
+
+    <script>
+        const app = {
+            currentBlob: null,
+
+            showHome() {
+                this.updateUI('home');
+                document.getElementById('home-screen').style.display = 'block';
+                document.getElementById('project-container').style.display = 'none';
+            },
+
+            // Carrega projetos internos no Iframe
+            async loadProject(id) {
+                try {
+                    const template = document.getElementById(`tpl-${id}-full`);
+                    if (!template) throw new Error("Template vazio.");
+
+                    this.updateUI(id);
+                    const frame = document.getElementById('app-frame');
+                    const container = document.getElementById('project-container');
+                    const home = document.getElementById('home-screen');
+
+                    home.style.display = 'none';
+                    container.style.display = 'block';
+
+                    const blob = new Blob([template.innerHTML], { type: 'text/html' });
+                    if (this.currentBlob) URL.revokeObjectURL(this.currentBlob);
+                    this.currentBlob = URL.createObjectURL(blob);
+                    
+                    frame.src = this.currentBlob;
+
+                } catch (err) {
+                    console.error(err);
+                    this.showError();
+                }
+            },
+            
+            // Função de Download
+            downloadFile(id) {
+                 try {
+                    const template = document.getElementById(`tpl-${id}-full`);
+                    if (!template) throw new Error("Template não encontrado.");
+                    
+                    const blob = new Blob([template.innerHTML], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = id === 'cripto' ? 'Ordo_Realitas_Missao.html' : 'Gerador_DnD.html';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                 } catch (err) {
+                     this.showError();
+                 }
+            },
+
+            updateUI(id) {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                const active = document.getElementById(`btn-${id}`);
+                if (active) active.classList.add('active');
+            },
+            
+            showError() {
+                const toast = document.getElementById('error-toast');
+                toast.style.display = 'block';
+                setTimeout(() => toast.style.display = 'none', 3000);
+            }
+        };
+
+        window.onload = () => app.showHome();
+    </script>
 </body>
 </html>
